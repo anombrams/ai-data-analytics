@@ -1,0 +1,26 @@
+[Unit]
+Description=AI Data Portal - Streamlit Application
+After=network.target
+
+[Service]
+Type=simple
+User=aiportal
+Group=aiportal
+WorkingDirectory=/var/www/ai_data_portal
+Environment="PATH=/var/www/ai_data_portal/venv/bin"
+EnvironmentFile=/var/www/ai_data_portal/.env
+ExecStart=/var/www/ai_data_portal/venv/bin/python -m streamlit run app.py --server.port 8501 --server.address 127.0.0.1 --server.headless true
+Restart=always
+RestartSec=10
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ai-data-portal
+
+[Install]
+WantedBy=multi-user.target
